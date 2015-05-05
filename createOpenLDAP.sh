@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+LDAP_NAME=${LDAP_NAME:-openldap}
+SLAPD_PASSWORD=${SLAPD_PASSWORD:-$1}
+SLAPD_DOMAIN=${SLAPD_DOMAIN:-$2}
+LDAP_IMAGE_NAME=${LDAP_IMAGE_NAME:-dinkel/openldap}
+
+docker run \
+--name ${LDAP_NAME} \
+-p 389:389 \
+-e SLAPD_PASSWORD=${SLAPD_PASSWORD} \
+-e SLAPD_DOMAIN=${SLAPD_DOMAIN} \
+-d ${LDAP_IMAGE_NAME}
