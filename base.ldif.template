@@ -1,20 +1,20 @@
-dn: ou=gerrit,{SLAPD_DOMAIN_DC}
+dn: ou=gerrit,{SLAPD_DN}
 objectClass: organizationalUnit
 ou: gerrit
 description: All groups of gerrit.
 
-dn: ou=accounts,{SLAPD_DOMAIN_DC}
+dn: ou=accounts,{SLAPD_DN}
 objectClass: organizationalUnit
 ou: accounts
 description: All accounts' entries are under this group.
 
-dn: cn=group,ou=accounts,{SLAPD_DOMAIN_DC}
+dn: cn=group,ou=accounts,{SLAPD_DN}
 objectClass: posixGroup
 cn: group
 description: group
 gidNumber: 10000
 
-dn: uid=gerrit,ou=accounts,{SLAPD_DOMAIN_DC}
+dn: uid={ADMIN_UID},ou=accounts,{SLAPD_DN}
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -22,10 +22,11 @@ objectClass: person
 homeDirectory: /home/gerrit
 loginShell: /bin/false
 gidNumber: 10000
-uid: gerrit
+uid: {ADMIN_UID}
 cn: gerrit admin
 displayName: gerrit admin
 uidNumber: 10000
-sn: gerrit
+sn: admin
 givenName: gerrit
-mail: gerrit@{SLAPD_DOMAIN}
+mail: {ADMIN_EMAIL}
+userPassword: {ADMIN_PWD}
