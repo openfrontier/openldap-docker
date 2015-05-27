@@ -1,0 +1,31 @@
+dn: ou=gerrit,{SLAPD_DOMAIN_DC}
+objectClass: organizationalUnit
+ou: gerrit
+description: All groups of gerrit.
+
+dn: ou=accounts,{SLAPD_DOMAIN_DC}
+objectClass: organizationalUnit
+ou: accounts
+description: All accounts' entries are under this group.
+
+dn: cn=group,ou=accounts,{SLAPD_DOMAIN_DC}
+objectClass: posixGroup
+cn: group
+description: group
+gidNumber: 10000
+
+dn: uid=gerrit,ou=accounts,{SLAPD_DOMAIN_DC}
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+homeDirectory: /home/gerrit
+loginShell: /bin/false
+gidNumber: 10000
+uid: gerrit
+cn: gerrit admin
+displayName: gerrit admin
+uidNumber: 10000
+sn: gerrit
+givenName: gerrit
+mail: gerrit@{SLAPD_DOMAIN}
