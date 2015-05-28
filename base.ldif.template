@@ -29,4 +29,3 @@ uidNumber: 10000
 sn: admin
 givenName: gerrit
 mail: {ADMIN_EMAIL}
-userPassword: {ADMIN_PWD}

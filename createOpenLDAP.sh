@@ -21,7 +21,6 @@ SLAPD_DN="${SLAPD_DN#,}"
 #Create base.ldif
 sed -e "s/{SLAPD_DN}/${SLAPD_DN}/g" ~/openldap-docker/${BASE_LDIF}.template > ~/openldap-docker/${BASE_LDIF}
 sed -i "s/{ADMIN_UID}/${GERRIT_ADMIN_UID}/g" ~/openldap-docker/${BASE_LDIF}
-sed -i "s/{ADMIN_PWD}/${GERRIT_ADMIN_PWD}/g" ~/openldap-docker/${BASE_LDIF}
 sed -i "s/{ADMIN_EMAIL}/${GERRIT_ADMIN_EMAIL}/g" ~/openldap-docker/${BASE_LDIF}
 
 #Start openldap
@@ -43,5 +42,5 @@ docker exec openldap \
 ldapadd -f /${BASE_LDIF} -x -D "cn=admin,${SLAPD_DN}" -w ${SLAPD_PASSWORD}
 
 docker exec openldap \
-ldappasswd -x -D "cn=admin,${SLAPD_DN}" -w ${SLAPD_PASSWORD} -s ${ADMIN_PWD} \
-"uid=${ADMIN_UID},ou=accounts,${SLAPD_DN}"
+ldappasswd -x -D "cn=admin,${SLAPD_DN}" -w ${SLAPD_PASSWORD} -s ${GERRIT_ADMIN_PWD} \
+"uid=${GERRIT_ADMIN_UID},ou=accounts,${SLAPD_DN}"
