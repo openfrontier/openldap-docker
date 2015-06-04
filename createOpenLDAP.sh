@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 LDAP_NAME=${LDAP_NAME:-openldap}
+LDAP_VOLUME=${LDAP_VOLUME:-openldap-volume}
 SLAPD_PASSWORD=${SLAPD_PASSWORD:-$1}
 SLAPD_DOMAIN=${SLAPD_DOMAIN:-$2}
 LDAP_IMAGE_NAME=${LDAP_IMAGE_NAME:-dinkel/openldap}
@@ -18,6 +19,13 @@ SLAPD_TMP_DN="${SLAPD_TMP_DN%.*}"
 done
 SLAPD_DN="${SLAPD_DN#,}"
 
+#Create OpenLDAP volume.
+docker run \
+--name ${LDAP_VOLUME} \
+--entrypoint="echo" \
+${LDAP_IMAGE_NAME} \
+"Create OpenLDAP volume."
+
 #Create base.ldif
 sed -e "s/{SLAPD_DN}/${SLAPD_DN}/g" ~/openldap-docker/${BASE_LDIF}.template > ~/openldap-docker/${BASE_LDIF}
 sed -i "s/{ADMIN_UID}/${GERRIT_ADMIN_UID}/g" ~/openldap-docker/${BASE_LDIF}
@@ -27,6 +35,7 @@ sed -i "s/{ADMIN_EMAIL}/${GERRIT_ADMIN_EMAIL}/g" ~/openldap-docker/${BASE_LDIF}
 docker run \
 --name ${LDAP_NAME} \
 -p 389:389 \
+--volumes-from ${LDAP_VOLUME} \
 -e SLAPD_PASSWORD=${SLAPD_PASSWORD} \
 -e SLAPD_DOMAIN=${SLAPD_DOMAIN} \
 -v ~/openldap-docker/${BASE_LDIF}:/${BASE_LDIF}:ro \
