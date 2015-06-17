@@ -23,6 +23,7 @@ SLAPD_DN="${SLAPD_DN#,}"
 docker run \
 --name ${LDAP_VOLUME} \
 --entrypoint="echo" \
+-e constraint:net==public \
 ${LDAP_IMAGE_NAME} \
 "Create OpenLDAP volume."
 
