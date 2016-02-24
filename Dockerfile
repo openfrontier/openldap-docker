@@ -1,8 +1,5 @@
-FROM dinkel/openldap
+FROM osixia/openldap
+MAINTAINER mengzhaopeng <qiuranke@gmail.com>
 
-MAINTAINER mzp <qiuranke@gmail.com>
-
-RUN apt-get update && apt-get install -y ldap-utils \
-    && apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
+COPY base.ldif.template /container/service/slapd/assets/test/
+COPY add-ldap-user.sh /container/tool/
