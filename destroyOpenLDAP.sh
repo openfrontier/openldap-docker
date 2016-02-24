@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 LDAP_NAME=${LDAP_NAME:-openldap}
 
