@@ -8,6 +8,7 @@ LDAP_IMAGE_NAME=${LDAP_IMAGE_NAME:-openfrontier/openldap}
 GERRIT_ADMIN_UID=${GERRIT_ADMIN_UID:-$3}
 GERRIT_ADMIN_PWD=${GERRIT_ADMIN_PWD:-$4}
 GERRIT_ADMIN_EMAIL=${GERRIT_ADMIN_EMAIL:-$5}
+CI_NETWORK=${CI_NETWORK:-ci-network}
 
 BASE_LDIF=base.ldif
 
@@ -34,6 +35,7 @@ sed -i "s/{ADMIN_EMAIL}/${GERRIT_ADMIN_EMAIL}/g" ~/openldap-docker/${BASE_LDIF}
 #Start openldap
 docker run \
 --name ${LDAP_NAME} \
+--net ${CI_NETWORK} \
 -p 389:389 \
 --volumes-from ${LDAP_VOLUME} \
 -e SLAPD_PASSWORD=${SLAPD_PASSWORD} \
