@@ -2,7 +2,6 @@
 set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LDAP_NAME=${LDAP_NAME:-openldap}
-LDAP_VOLUME=${LDAP_VOLUME:-openldap-volume}
 SLAPD_PASSWORD=${SLAPD_PASSWORD:-$1}
 SLAPD_DOMAIN=${SLAPD_DOMAIN:-$2}
 LDAP_IMAGE_NAME=${LDAP_IMAGE_NAME:-openfrontier/openldap}
@@ -22,11 +21,8 @@ done
 SLAPD_DN="${SLAPD_DN#,}"
 
 #Create OpenLDAP volume.
-docker run \
---name ${LDAP_VOLUME} \
---entrypoint="echo" \
-${LDAP_IMAGE_NAME} \
-"Create OpenLDAP volume."
+docker volume create --name openldap-etc-volume
+docker volume create --name openldap-repo-volume
 
 #Create base.ldif
 sed -e "s/{SLAPD_DN}/${SLAPD_DN}/g" ${DIR}/${BASE_LDIF}.template > ${DIR}/${BASE_LDIF}
@@ -38,7 +34,8 @@ docker run \
 --name ${LDAP_NAME} \
 --net ${CI_NETWORK} \
 -p 389:389 \
---volumes-from ${LDAP_VOLUME} \
+--volume openldap-etc-volume:/etc/ldap \
+--volume openldap-repo-volume:/var/lib/ldap \
 -e SLAPD_PASSWORD=${SLAPD_PASSWORD} \
 -e SLAPD_DOMAIN=${SLAPD_DOMAIN} \
 -v ${DIR}/${BASE_LDIF}:/${BASE_LDIF}:ro \
